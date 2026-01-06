@@ -57,7 +57,7 @@ Shield360-Research/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/AshenWijesingha/Shield360-Research.git
+   git clone https://github.com/unknownerror0519/shield360.git
    cd Shield360-Research
    ```
 
