@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Endpoint Details | Shield360 Research</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="View detailed information about an endpoint in Shield360 Research Dashboard" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Smooth loading animation */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+    
+    /* Pulse animation for status indicators */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    .pulse-dot {
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    /* Stagger animation for cards */
+    .animate-stagger {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    .animate-stagger:nth-child(1) { animation-delay: 0.1s; }
+    .animate-stagger:nth-child(2) { animation-delay: 0.15s; }
+    .animate-stagger:nth-child(3) { animation-delay: 0.2s; }
+    .animate-stagger:nth-child(4) { animation-delay: 0.25s; }
+    .animate-stagger:nth-child(5) { animation-delay: 0.3s; }
+    .animate-stagger:nth-child(6) { animation-delay: 0.35s; }
+    .animate-stagger:nth-child(7) { animation-delay: 0.4s; }
+    .animate-stagger:nth-child(8) { animation-delay: 0.45s; }
+    
+    /* Scrollbar styling */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    
+    /* Gradient background */
+    .hero-gradient {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+    }
+    
+    /* Card hover effect */
+    .info-card {
+      transition: all 0.3s ease;
+    }
+    .info-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 4px 10px -6px rgb(0 0 0 / 0.1);
+    }
+    
+    /* App list scrollable */
+    .app-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    /* Status indicators */
+    .status-active {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .status-inactive {
+      background-color: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .status-warning {
+      background-color: #fef9c3;
+      color: #854d0e;
+      border: 1px solid #fde047;
+    }
+    
+    /* Collapsible sections */
+    .collapsible-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .collapsible-content.expanded {
+      max-height: 3000px;
+    }
+    
+    /* Rotated icon state */
+    .icon-rotated,
+    .rotate-180 {
+      transform: rotate(180deg);
+    }
+    
+    /* Line clamp for truncating text */
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="hero-gradient text-white py-6 shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <!-- Back Button -->
+          <a href="index.html" class="flex items-center gap-2 px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors duration-200" aria-label="Back to Dashboard">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            <span class="hidden sm:inline text-sm font-medium">Dashboard</span>
+          </a>
+          <div class="h-8 w-px bg-white/20 hidden sm:block"></div>
+          <div>
+            <h1 class="text-xl sm:text-2xl font-bold tracking-wide flex items-center gap-2">
+              <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              Shield360 Research
+            </h1>
+            <p class="text-gray-400 text-sm">Endpoint Details</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="refreshBtn" class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium shadow-md hover:shadow-lg" title="Refresh Data">
+            <svg id="refreshIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            <span class="hidden sm:inline">Refresh</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-6 sm:py-8">
+
+    <!-- Loader -->
+    <div id="loader" class="text-center mt-16">
+      <div class="inline-flex flex-col items-center gap-4">
+        <div class="relative">
+          <svg class="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="text-gray-600 text-lg font-medium">Loading endpoint details...</p>
+          <p class="text-gray-400 text-sm mt-1">Connecting to Shield360 database</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error" class="hidden text-center mt-16 px-4">
+      <div class="inline-block bg-red-50 border border-red-200 rounded-xl p-8 max-w-md">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="h-8 w-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+        </div>
+        <h3 class="text-red-700 font-bold text-lg" id="errorMessage">Endpoint not found</h3>
+        <p class="text-red-500 text-sm mt-2" id="errorDetails">The requested endpoint could not be found in the database.</p>
+        <a href="index.html" class="inline-block mt-6 px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
+          Back to Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Endpoint Details Container -->
+    <div id="detailsContainer" class="hidden max-w-7xl mx-auto px-4 sm:px-6">
+      
+      <!-- Hero Section with Endpoint Name and Status -->
+      <section id="heroSection" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6 animate-fadeIn">
+        <div class="hero-gradient text-white p-6 sm:p-8">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div class="flex items-start gap-4">
+              <!-- Status Indicator -->
+              <div id="statusIconContainer" class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 bg-blue-500/20">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"></path>
+                </svg>
+              </div>
+              <div>
+                <h1 id="endpointName" class="text-2xl sm:text-3xl font-bold mb-1">Loading...</h1>
+                <p id="endpointSubtitle" class="text-gray-300 text-sm sm:text-base">Loading endpoint details...</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <span id="firewallBadge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-500/20 text-gray-300 border border-gray-500/30">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span id="firewallStatusText">Firewall: Loading</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quick Stats Bar -->
+        <div id="quickStatsBar" class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-gray-100 bg-gray-50"></div>
+      </section>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left Column: Primary Information -->
+        <div class="lg:col-span-2 space-y-6">
+          
+          <!-- System Identity Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">System Identity</h2>
+            </div>
+            <div id="identityContent" class="p-6">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Operating System Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Operating System</h2>
+            </div>
+            <div id="osContent" class="p-6">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Security Posture Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Security Posture</h2>
+            </div>
+            <div id="securityContent" class="p-6">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Network Information Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Network Information</h2>
+            </div>
+            <div id="networkContent" class="p-6">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Hardware Information Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Hardware Information</h2>
+            </div>
+            <div id="hardwareContent" class="p-6">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Applications Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                </svg>
+                <h2 class="text-lg font-semibold text-gray-800">Installed Applications</h2>
+                <span id="appCount" class="text-sm text-gray-500 ml-2">(0)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <a id="scanAppsForVulnLink" href="#" class="flex items-center gap-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 text-xs font-medium">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                  </svg>
+                  <span>Scan for Vulnerabilities</span>
+                </a>
+                <button id="toggleAppsBtn" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                  <span id="toggleAppsText">Collapse</span>
+                  <svg id="toggleAppsIcon" class="w-4 h-4 transition-transform icon-rotated" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div id="applicationsContent" class="p-6 collapsible-content expanded">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Vulnerability Scan Card (NVD) -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h2 class="text-lg font-semibold text-gray-800">Vulnerability Scan (NVD)</h2>
+              </div>
+              <a id="scanVulnLink" href="#" class="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <span>Open Vulnerability Scanner</span>
+              </a>
+            </div>
+            <div class="p-6">
+              <div class="text-center py-6">
+                <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  </svg>
+                </div>
+                <p class="text-gray-600 font-medium">Scan Applications for Known Vulnerabilities</p>
+                <p class="text-gray-400 text-sm mt-1">Open the dedicated vulnerability scanner to check installed applications against the NVD database</p>
+                <a id="scanVulnLinkBtn" href="#" class="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                  Launch Vulnerability Scanner
+                </a>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Right Column: Secondary Information -->
+        <div class="space-y-6">
+
+          <!-- User Context Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">User Context</h2>
+            </div>
+            <div id="userContextContent" class="p-6">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Quick Actions Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Quick Actions</h2>
+            </div>
+            <div class="p-4 space-y-2">
+              <a href="index.html" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-800">View All Endpoints</p>
+                  <p class="text-xs text-gray-500">Return to dashboard</p>
+                </div>
+              </a>
+              <button id="copyIdBtn" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group text-left">
+                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-purple-200 transition-colors">
+                  <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-800">Copy Endpoint ID</p>
+                  <p class="text-xs text-gray-500">Copy to clipboard</p>
+                </div>
+              </button>
+              <button id="shareBtn" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group text-left">
+                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-200 transition-colors">
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-800">Share Endpoint</p>
+                  <p class="text-xs text-gray-500">Copy shareable link</p>
+                </div>
+              </button>
+            </div>
+          </section>
+
+          <!-- Scan Time Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Scan Information</h2>
+            </div>
+            <div id="scanTimeContent" class="p-6 space-y-4">
+              <!-- Content will be populated by JavaScript -->
+            </div>
+          </section>
+
+          <!-- Document Info Card -->
+          <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-stagger info-card">
+            <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <h2 class="text-lg font-semibold text-gray-800">Document Info</h2>
+            </div>
+            <div class="p-6">
+              <div class="space-y-3">
+                <div>
+                  <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Document ID</p>
+                  <p id="documentId" class="text-sm font-mono text-gray-800 bg-gray-100 rounded px-2 py-1 break-all"></p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Agent ID</p>
+                  <p id="agentId" class="text-sm font-mono text-gray-800 bg-gray-100 rounded px-2 py-1 break-all"></p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Collection</p>
+                  <p class="text-sm text-gray-800">endpoints</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- Raw JSON Section -->
+      <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6 animate-stagger info-card">
+        <div class="border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+            </svg>
+            <h2 class="text-lg font-semibold text-gray-800">Raw JSON Data</h2>
+          </div>
+          <button id="toggleRawData" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+            <span id="toggleRawDataText">Show Raw JSON</span>
+            <svg id="toggleRawDataIcon" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="rawJsonContainer" class="hidden">
+          <pre id="rawJsonContent" class="bg-gray-900 text-green-400 p-4 text-xs overflow-x-auto custom-scrollbar m-4 rounded-lg max-h-96"></pre>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+    <div class="bg-gray-900 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3">
+      <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center text-sm text-gray-500 py-4 border-t bg-white mt-8">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span>© 2026 Shield360 Research | Powered by Firebase</span>
+      <span id="currentTime" class="text-gray-400"></span>
+    </div>
+  </footer>
+
+  <!-- Firebase + Firestore Logic -->
+  <script type="module">
+    // Firebase SDK imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    /* ===============================
+       Firebase Configuration
+    ================================ */
+    const firebaseConfig = {
+      apiKey: "AIzaSyDgLbcxEKfUS8q-Qoq8CVIOsG4Wk1EjedY",
+      authDomain: "shield360-research.firebaseapp.com",
+      projectId: "shield360-research",
+      storageBucket: "shield360-research.firebasestorage.app",
+      messagingSenderId: "976942887666",
+      appId: "1:976942887666:web:f3176543a19681b59a566b",
+      measurementId: "G-6B02NRCY1S"
+    };
+
+    /* ===============================
+       COLLECTION NAME
+    ================================ */
+    const COLLECTION_NAME = "endpoints";
+
+    /* ===============================
+       Initialize Firebase
+    ================================ */
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // DOM Elements
+    const loader = document.getElementById("loader");
+    const errorBox = document.getElementById("error");
+    const errorMessage = document.getElementById("errorMessage");
+    const errorDetails = document.getElementById("errorDetails");
+    const detailsContainer = document.getElementById("detailsContainer");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const refreshIcon = document.getElementById("refreshIcon");
+    const currentTimeEl = document.getElementById("currentTime");
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toastMessage");
+
+    // Hero section elements
+    const endpointName = document.getElementById("endpointName");
+    const endpointSubtitle = document.getElementById("endpointSubtitle");
+    const firewallBadge = document.getElementById("firewallBadge");
+    const firewallStatusText = document.getElementById("firewallStatusText");
+    const quickStatsBar = document.getElementById("quickStatsBar");
+
+    // Content sections
+    const identityContent = document.getElementById("identityContent");
+    const osContent = document.getElementById("osContent");
+    const securityContent = document.getElementById("securityContent");
+    const networkContent = document.getElementById("networkContent");
+    const hardwareContent = document.getElementById("hardwareContent");
+    const applicationsContent = document.getElementById("applicationsContent");
+    const userContextContent = document.getElementById("userContextContent");
+    const scanTimeContent = document.getElementById("scanTimeContent");
+    const documentId = document.getElementById("documentId");
+    const agentIdEl = document.getElementById("agentId");
+    const appCount = document.getElementById("appCount");
+    const rawJsonContainer = document.getElementById("rawJsonContainer");
+    const rawJsonContent = document.getElementById("rawJsonContent");
+
+    // Buttons
+    const copyIdBtn = document.getElementById("copyIdBtn");
+    const shareBtn = document.getElementById("shareBtn");
+    const toggleRawData = document.getElementById("toggleRawData");
+    const toggleRawDataText = document.getElementById("toggleRawDataText");
+    const toggleRawDataIcon = document.getElementById("toggleRawDataIcon");
+    const toggleAppsBtn = document.getElementById("toggleAppsBtn");
+    const toggleAppsText = document.getElementById("toggleAppsText");
+    const toggleAppsIcon = document.getElementById("toggleAppsIcon");
+
+    // Store endpoint data
+    let currentEndpointId = null;
+    let currentEndpointData = null;
+
+    /* ===============================
+       Helper: Escape HTML to prevent XSS
+    ================================ */
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return "";
+      const div = document.createElement("div");
+      div.textContent = String(text);
+      return div.innerHTML;
+    }
+
+    /* ===============================
+       Helper: Format date from various formats
+    ================================ */
+    function formatDate(dateValue, includeTime = true) {
+      // Handle null, undefined, or empty object
+      if (!dateValue) return "N/A";
+      if (typeof dateValue === "object" && !Array.isArray(dateValue) && Object.keys(dateValue).length === 0) {
+        return "N/A";
+      }
+      
+      const options = includeTime 
+        ? { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }
+        : { year: "numeric", month: "long", day: "numeric" };
+      
+      // Handle Firestore Timestamp
+      if (dateValue.toDate && typeof dateValue.toDate === "function") {
+        return dateValue.toDate().toLocaleDateString("en-US", options);
+      }
+      
+      // Handle seconds (Firestore timestamp as object with seconds and nanoseconds)
+      if (typeof dateValue.seconds === "number") {
+        const date = new Date(dateValue.seconds * 1000);
+        return date.toLocaleDateString("en-US", options);
+      }
+      
+      // Handle string date in format "YYYYMMDDHHmmss"
+      if (typeof dateValue === "string" && /^\d{14}$/.test(dateValue)) {
+        const year = dateValue.substring(0, 4);
+        const month = dateValue.substring(4, 6);
+        const day = dateValue.substring(6, 8);
+        const hour = dateValue.substring(8, 10);
+        const minute = dateValue.substring(10, 12);
+        const second = dateValue.substring(12, 14);
+        const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
+        if (!isNaN(date)) {
+          return date.toLocaleDateString("en-US", options);
+        }
+      }
+      
+      // Handle string date
+      if (typeof dateValue === "string") {
+        const parsed = new Date(dateValue);
+        if (!isNaN(parsed)) {
+          return parsed.toLocaleDateString("en-US", options);
+        }
+        return escapeHtml(dateValue);
+      }
+      
+      // Handle number timestamp
+      if (typeof dateValue === "number") {
+        const date = new Date(dateValue);
+        return date.toLocaleDateString("en-US", options);
+      }
+      
+      return "N/A";
+    }
+
+    /* ===============================
+       Helper: Format relative time
+    ================================ */
+    function formatRelativeTime(dateValue) {
+      // Handle null, undefined, or empty object
+      if (!dateValue) return "";
+      if (typeof dateValue === "object" && !Array.isArray(dateValue) && Object.keys(dateValue).length === 0) {
+        return "";
+      }
+      
+      let timestamp;
+      if (dateValue.toDate && typeof dateValue.toDate === "function") {
+        timestamp = dateValue.toDate().getTime();
+      } else if (typeof dateValue.seconds === "number") {
+        timestamp = dateValue.seconds * 1000;
+      } else if (typeof dateValue === "string") {
+        timestamp = new Date(dateValue).getTime();
+      } else if (typeof dateValue === "number") {
+        timestamp = dateValue;
+      } else {
+        return "";
+      }
+      
+      const now = Date.now();
+      const diff = now - timestamp;
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      
+      if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+      if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      return "Just now";
+    }
+
+    /* ===============================
+       Helper: Get antivirus status styling
+    ================================ */
+    function getAntivirusStatusClass(status) {
+      const statusLower = (status || "").toLowerCase();
+      if (statusLower === "enabled" || statusLower === "active" || statusLower === "on") {
+        return "status-active";
+      } else if (statusLower.includes("disabled") || statusLower.includes("snoozed") || statusLower === "off") {
+        return "status-inactive";
+      }
+      return "status-warning";
+    }
+
+    /* ===============================
+       Helper: Get firewall status styling
+    ================================ */
+    function getFirewallStatusClass(status) {
+      const statusLower = (status || "").toLowerCase();
+      if (statusLower === "active" || statusLower === "enabled" || statusLower === "on") {
+        return { class: "bg-green-500/20 text-green-300 border-green-500/30", text: "Firewall: Active" };
+      } else if (statusLower === "inactive" || statusLower === "disabled" || statusLower === "off") {
+        return { class: "bg-red-500/20 text-red-300 border-red-500/30", text: "Firewall: Inactive" };
+      }
+      return { class: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30", text: `Firewall: ${status}` };
+    }
+
+    /* ===============================
+       Helper: Create info row
+    ================================ */
+    function createInfoRow(label, value, icon = "") {
+      return `
+        <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+          ${icon ? `<span class="text-lg flex-shrink-0">${icon}</span>` : ""}
+          <div class="min-w-0 flex-1">
+            <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">${escapeHtml(label)}</p>
+            <p class="text-sm font-semibold text-gray-800 break-words">${escapeHtml(String(value || "N/A"))}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ===============================
+       Update current time display
+    ================================ */
+    function updateCurrentTime() {
+      const now = new Date();
+      currentTimeEl.textContent = now.toLocaleString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    /* ===============================
+       Show Toast Notification
+    ================================ */
+    function showToast(message) {
+      toastMessage.textContent = message;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+      
+      setTimeout(() => {
+        toast.classList.add("translate-y-20", "opacity-0");
+        toast.classList.remove("translate-y-0", "opacity-100");
+      }, 3000);
+    }
+
+    /* ===============================
+       Get Endpoint ID from URL
+    ================================ */
+    function getEndpointIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    /* ===============================
+       Show Error
+    ================================ */
+    function showError(message, details = "") {
+      loader.classList.add("hidden");
+      detailsContainer.classList.add("hidden");
+      errorBox.classList.remove("hidden");
+      errorMessage.textContent = message;
+      errorDetails.textContent = details;
+    }
+
+    /* ===============================
+       Populate Endpoint Details
+    ================================ */
+    function populateEndpointDetails(docId, data) {
+      currentEndpointId = docId;
+      currentEndpointData = data;
+      
+      // Get primary fields
+      const hostname = data.hostname || data.id || "Unknown Endpoint";
+      const osInfo = data.os_info || {};
+      const identity = data.identity || {};
+      const securityPosture = data.security_posture || {};
+      const network = data.network || {};
+      const hardware = data.hardware || {};
+      const applications = data.applications || [];
+      const userContext = data.user_context || {};
+      const scanTime = data.scan_time || {};
+
+      // Update page title
+      document.title = `${escapeHtml(hostname)} | Shield360 Research`;
+
+      // Update hero section
+      endpointName.textContent = hostname;
+      endpointSubtitle.textContent = `${osInfo.name || "Unknown OS"} • ${identity.manufacturer || ""} ${identity.model || ""}`.trim();
+      
+      // Update firewall badge
+      const firewallStatus = getFirewallStatusClass(securityPosture.firewall_status);
+      firewallBadge.className = `inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border ${firewallStatus.class}`;
+      firewallStatusText.textContent = firewallStatus.text;
+
+      // Update quick stats bar
+      const publicIp = network.public_ip || "N/A";
+      const appCountNum = applications.length;
+
+      const quickStats = [
+        { label: "Public IP", value: publicIp, icon: `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>` },
+        { label: "OS Version", value: osInfo.version || "N/A", icon: `<svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>` },
+        { label: "Current User", value: userContext.current_user || "N/A", icon: `<svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>` },
+        { label: "Applications", value: `${appCountNum} installed`, icon: `<svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>` }
+      ];
+
+      quickStatsBar.innerHTML = quickStats.map(stat => `
+        <div class="p-4 text-center">
+          <div class="flex items-center justify-center gap-2 mb-1">
+            ${stat.icon}
+            <span class="text-xs text-gray-500 font-medium">${stat.label}</span>
+          </div>
+          <p class="text-sm font-semibold text-gray-800 truncate" title="${escapeHtml(String(stat.value))}">${escapeHtml(String(stat.value))}</p>
+        </div>
+      `).join("");
+
+      // Populate Identity Section
+      identityContent.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${createInfoRow("Hostname", hostname, "🖥️")}
+          ${createInfoRow("FQDN", identity.fqdn || hostname, "🌐")}
+          ${createInfoRow("Manufacturer", identity.manufacturer, "🏭")}
+          ${createInfoRow("Model", identity.model, "📦")}
+          ${createInfoRow("Endpoint ID", data.id || docId, "🔑")}
+          ${createInfoRow("Agent ID", data.agent_id, "🤖")}
+        </div>
+      `;
+
+      // Populate OS Section
+      osContent.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${createInfoRow("Operating System", osInfo.name, "💻")}
+          ${createInfoRow("Version", osInfo.version, "📊")}
+          ${createInfoRow("Last Boot", formatDate(osInfo.last_boot), "🔄")}
+          ${createInfoRow("Timezone", osInfo.timezone, "🌍")}
+        </div>
+      `;
+
+      // Populate Security Posture Section
+      const antivirusList = securityPosture.antivirus || [];
+      const firewallStatusLower = (securityPosture.firewall_status || "").toLowerCase();
+      const isFirewallActive = firewallStatusLower === "active" || firewallStatusLower === "enabled" || firewallStatusLower === "on";
+      let securityHtml = `
+        <div class="mb-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-lg">🛡️</span>
+            <span class="text-sm font-semibold text-gray-700">Firewall Status</span>
+            <span class="px-2 py-0.5 text-xs font-medium rounded-full ${isFirewallActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+              ${escapeHtml(securityPosture.firewall_status || "Unknown")}
+            </span>
+          </div>
+        </div>
+      `;
+
+      if (antivirusList.length > 0) {
+        securityHtml += `
+          <div class="mb-2">
+            <span class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+              <span class="text-lg">🦠</span>
+              Antivirus Software (${antivirusList.length})
+            </span>
+          </div>
+          <div class="space-y-3">
+            ${antivirusList.map(av => `
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex-1 min-w-0">
+                    <h4 class="font-semibold text-gray-800">${escapeHtml(av.name || "Unknown")}</h4>
+                    <p class="text-xs text-gray-500 font-mono truncate mt-1" title="${escapeHtml(av.path || "")}">${escapeHtml(av.path || "N/A")}</p>
+                  </div>
+                  <span class="px-2.5 py-1 text-xs font-medium rounded-full flex-shrink-0 ${getAntivirusStatusClass(av.status)}">
+                    ${escapeHtml(av.status || "Unknown")}
+                  </span>
+                </div>
+                ${av.state_code ? `<p class="text-xs text-gray-400 mt-2">State Code: ${escapeHtml(av.state_code)}</p>` : ""}
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else {
+        securityHtml += `<p class="text-sm text-gray-500">No antivirus software detected</p>`;
+      }
+
+      securityContent.innerHTML = securityHtml;
+
+      // Populate Network Section
+      const interfaces = network.interfaces || [];
+      let networkHtml = `
+        <div class="mb-4">
+          <div class="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <span class="text-lg">🌐</span>
+            <div>
+              <p class="text-xs text-blue-600 font-medium uppercase tracking-wider">Public IP Address</p>
+              <p class="text-lg font-bold text-blue-800 font-mono">${escapeHtml(network.public_ip || "N/A")}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (interfaces.length > 0) {
+        networkHtml += `
+          <div class="mb-2">
+            <span class="text-sm font-semibold text-gray-700">Network Interfaces (${interfaces.length})</span>
+          </div>
+          <div class="space-y-3">
+            ${interfaces.map(iface => `
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div class="flex items-center gap-2 mb-3">
+                  <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                  </svg>
+                  <h4 class="font-semibold text-gray-800">${escapeHtml(iface.connection_name || iface.name || "Unknown Interface")}</h4>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span class="text-gray-500">Adapter:</span>
+                    <span class="text-gray-800 ml-1 truncate block" title="${escapeHtml(iface.name || "")}">${escapeHtml(iface.name || "N/A")}</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500">IPv4:</span>
+                    <span class="text-gray-800 font-mono ml-1">${escapeHtml(iface.ipv4 || "N/A")}</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500">Subnet:</span>
+                    <span class="text-gray-800 font-mono ml-1">${escapeHtml(iface.subnet || "N/A")}</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500">MAC:</span>
+                    <span class="text-gray-800 font-mono ml-1">${escapeHtml(iface.mac || "N/A")}</span>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="text-gray-500">DHCP:</span>
+                    <span class="text-gray-800 ml-1">${iface.dhcp_enabled ? "Enabled" : "Disabled"}</span>
+                  </div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      networkContent.innerHTML = networkHtml;
+
+      // Populate Hardware Section
+      const cpu = hardware.cpu || [];
+      const storage = hardware.storage || [];
+      const peripherals = hardware.peripherals || {};
+
+      let hardwareHtml = `<div class="space-y-4">`;
+
+      // CPU Info
+      if (cpu.length > 0) {
+        hardwareHtml += `
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span class="text-lg">🔲</span>
+              Processor (CPU)
+            </h4>
+            <div class="space-y-2">
+              ${cpu.map(c => `
+                <div class="p-3 bg-gray-50 rounded-lg">
+                  <p class="font-medium text-gray-800">${escapeHtml(c.name || "Unknown CPU")}</p>
+                  <div class="flex flex-wrap gap-3 mt-2 text-sm text-gray-600">
+                    <span><strong>Cores:</strong> ${c.cores || "N/A"}</span>
+                    <span><strong>Logical:</strong> ${c.logical || "N/A"}</span>
+                    <span><strong>Speed:</strong> ${c.speed_mhz ? `${c.speed_mhz} MHz` : "N/A"}</span>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      // RAM Info
+      hardwareHtml += `
+        <div>
+          <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <span class="text-lg">💾</span>
+            Memory (RAM)
+          </h4>
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <p class="font-medium text-gray-800">${hardware.ram_total_gib !== undefined ? `${hardware.ram_total_gib} GB Total` : "N/A"}</p>
+          </div>
+        </div>
+      `;
+
+      // Storage Info
+      if (storage.length > 0) {
+        hardwareHtml += `
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span class="text-lg">💿</span>
+              Storage Devices (${storage.length})
+            </h4>
+            <div class="space-y-2">
+              ${storage.map(s => `
+                <div class="p-3 bg-gray-50 rounded-lg">
+                  <p class="font-medium text-gray-800">${escapeHtml(s.model || "Unknown Drive")}</p>
+                  <div class="flex flex-wrap gap-3 mt-2 text-sm text-gray-600">
+                    <span><strong>Size:</strong> ${s.size_gib ? `${s.size_gib} GB` : "N/A"}</span>
+                    <span><strong>Serial:</strong> <span class="font-mono">${escapeHtml(s.serial || "N/A")}</span></span>
+                  </div>
+                  ${s.partitions && s.partitions.length > 0 ? `
+                    <div class="mt-2">
+                      <p class="text-xs text-gray-500 mb-1">Partitions:</p>
+                      <div class="flex flex-wrap gap-2">
+                        ${s.partitions.map(p => `<span class="px-2 py-1 bg-gray-200 rounded text-xs text-gray-700">${escapeHtml(p)}</span>`).join("")}
+                      </div>
+                    </div>
+                  ` : ""}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      // Peripherals
+      if (Object.keys(peripherals).length > 0) {
+        hardwareHtml += `
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span class="text-lg">🖱️</span>
+              Peripherals
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        `;
+        
+        if (peripherals.keyboards && peripherals.keyboards.length > 0) {
+          hardwareHtml += `
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-xs text-gray-500 font-medium uppercase mb-1">Keyboards (${peripherals.keyboards.length})</p>
+              <ul class="text-sm text-gray-700 space-y-1">
+                ${peripherals.keyboards.map(k => `<li>• ${escapeHtml(k)}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        }
+        
+        if (peripherals.mice && peripherals.mice.length > 0) {
+          hardwareHtml += `
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-xs text-gray-500 font-medium uppercase mb-1">Mice (${peripherals.mice.length})</p>
+              <ul class="text-sm text-gray-700 space-y-1">
+                ${peripherals.mice.map(m => `<li>• ${escapeHtml(m)}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        }
+        
+        if (peripherals.printers && peripherals.printers.length > 0) {
+          hardwareHtml += `
+            <div class="p-3 bg-gray-50 rounded-lg col-span-full">
+              <p class="text-xs text-gray-500 font-medium uppercase mb-1">Printers (${peripherals.printers.length})</p>
+              <ul class="text-sm text-gray-700 space-y-1">
+                ${peripherals.printers.map(p => `<li>• ${escapeHtml(p)}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        }
+
+        hardwareHtml += `</div></div>`;
+      }
+
+      hardwareHtml += `</div>`;
+      hardwareContent.innerHTML = hardwareHtml;
+
+      // Populate Applications Section
+      appCount.textContent = `(${applications.length})`;
+      
+      if (applications.length > 0) {
+        renderApplicationsList(applications);
+      } else {
+        applicationsContent.innerHTML = `<p class="text-sm text-gray-500">No applications detected</p>`;
+      }
+
+      // Populate User Context Section
+      // Handle different formats for is_process_elevated (1, true, "true", "1")
+      const isElevated = userContext.is_process_elevated === 1 || 
+                         userContext.is_process_elevated === true || 
+                         userContext.is_process_elevated === "true" || 
+                         userContext.is_process_elevated === "1";
+      userContextContent.innerHTML = `
+        <div class="space-y-3">
+          ${createInfoRow("Current User", userContext.current_user, "👤")}
+          ${createInfoRow("Privilege Group", userContext.user_privilege_group, "🔐")}
+          ${createInfoRow("Process Elevated", isElevated ? "Yes (Administrator)" : "No", "⚡")}
+        </div>
+      `;
+
+      // Populate Scan Time Section
+      scanTimeContent.innerHTML = `
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Last Scan</p>
+            <p class="text-sm font-semibold text-gray-800">${formatDate(scanTime)}</p>
+            <p class="text-xs text-gray-400">${formatRelativeTime(scanTime)}</p>
+          </div>
+        </div>
+      `;
+
+      // Update document IDs
+      documentId.textContent = docId;
+      if (agentIdEl) {
+        agentIdEl.textContent = data.agent_id || "N/A";
+      }
+
+      // Update raw JSON
+      rawJsonContent.textContent = JSON.stringify({ id: docId, ...data }, null, 2);
+
+      // Update vulnerability scanner links
+      const vulnScannerUrl = `vulnerability-scanner.html?id=${encodeURIComponent(docId)}`;
+      const scanAppsForVulnLink = document.getElementById("scanAppsForVulnLink");
+      const scanVulnLink = document.getElementById("scanVulnLink");
+      const scanVulnLinkBtn = document.getElementById("scanVulnLinkBtn");
+      
+      if (scanAppsForVulnLink) {
+        scanAppsForVulnLink.href = vulnScannerUrl;
+      }
+      if (scanVulnLink) {
+        scanVulnLink.href = vulnScannerUrl;
+      }
+      if (scanVulnLinkBtn) {
+        scanVulnLinkBtn.href = vulnScannerUrl;
+      }
+
+      // Show the details container
+      loader.classList.add("hidden");
+      detailsContainer.classList.remove("hidden");
+    }
+
+    /* ===============================
+       Load Endpoint Data
+    ================================ */
+    async function loadEndpointData(showRefreshAnimation = false) {
+      const endpointId = getEndpointIdFromUrl();
+      
+      if (!endpointId) {
+        showError("No Endpoint Specified", "Please select an endpoint from the dashboard to view its details.");
+        return;
+      }
+
+      console.log("Loading endpoint:", endpointId);
+
+      if (showRefreshAnimation) {
+        refreshIcon.classList.add("animate-spin");
+        refreshBtn.disabled = true;
+      }
+
+      try {
+        const docRef = doc(db, COLLECTION_NAME, endpointId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          showError("Endpoint Not Found", `The endpoint with ID "${endpointId}" could not be found in the database.`);
+          return;
+        }
+
+        const data = docSnap.data();
+        console.log("Endpoint data:", data);
+
+        populateEndpointDetails(docSnap.id, data);
+
+      } catch (error) {
+        console.error("Firestore Error:", error);
+        
+        let userMessage = "Failed to load endpoint data.";
+        let detailMessage = error.message || "";
+
+        if (error.code === "permission-denied") {
+          userMessage = "Access Denied";
+          detailMessage = "You don't have permission to access this endpoint. Please check Firestore security rules.";
+        } else if (error.code === "unavailable") {
+          userMessage = "Service Unavailable";
+          detailMessage = "Firebase service is temporarily unavailable. Please try again later.";
+        }
+
+        showError(userMessage, detailMessage);
+      } finally {
+        if (showRefreshAnimation) {
+          refreshIcon.classList.remove("animate-spin");
+          refreshBtn.disabled = false;
+        }
+      }
+    }
+
+    /* ===============================
+       Render Applications List
+    ================================ */
+    function renderApplicationsList(applications) {
+      const appListHtml = applications.map((app, index) => {
+        return `
+          <div class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <span class="text-sm text-gray-400 w-6 text-center">${index + 1}</span>
+                <div class="min-w-0 flex-1">
+                  <p class="font-medium text-gray-800 truncate" title="${escapeHtml(app.name || "")}">${escapeHtml(app.name || "Unknown App")}</p>
+                  <span class="text-xs font-mono text-gray-500">${escapeHtml(app.version || "N/A")}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+      
+      applicationsContent.innerHTML = `<div class="app-list custom-scrollbar space-y-2">${appListHtml}</div>`;
+    }
+
+    /* ===============================
+       Event Listeners
+    ================================ */
+    
+    // Refresh button
+    refreshBtn.addEventListener("click", () => loadEndpointData(true));
+
+    // Copy endpoint ID
+    copyIdBtn.addEventListener("click", async () => {
+      if (currentEndpointId) {
+        try {
+          await navigator.clipboard.writeText(currentEndpointId);
+          showToast("Endpoint ID copied to clipboard!");
+        } catch (err) {
+          console.error("Failed to copy:", err);
+          showToast("Failed to copy to clipboard");
+        }
+      }
+    });
+
+    // Share button
+    shareBtn.addEventListener("click", async () => {
+      const url = window.location.href;
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast("Link copied to clipboard!");
+      } catch (err) {
+        console.error("Failed to copy:", err);
+        showToast("Failed to copy to clipboard");
+      }
+    });
+
+    // Toggle raw JSON
+    let rawJsonVisible = false;
+    toggleRawData.addEventListener("click", () => {
+      rawJsonVisible = !rawJsonVisible;
+      if (rawJsonVisible) {
+        rawJsonContainer.classList.remove("hidden");
+        toggleRawDataText.textContent = "Hide Raw JSON";
+        if (toggleRawDataIcon) toggleRawDataIcon.classList.add("icon-rotated");
+      } else {
+        rawJsonContainer.classList.add("hidden");
+        toggleRawDataText.textContent = "Show Raw JSON";
+        if (toggleRawDataIcon) toggleRawDataIcon.classList.remove("icon-rotated");
+      }
+    });
+
+    // Toggle applications list
+    let appsExpanded = true;
+    if (toggleAppsBtn) {
+      toggleAppsBtn.addEventListener("click", () => {
+        appsExpanded = !appsExpanded;
+        if (appsExpanded) {
+          applicationsContent.classList.add("expanded");
+          if (toggleAppsText) toggleAppsText.textContent = "Collapse";
+          if (toggleAppsIcon) toggleAppsIcon.classList.add("icon-rotated");
+        } else {
+          applicationsContent.classList.remove("expanded");
+          if (toggleAppsText) toggleAppsText.textContent = "Expand";
+          if (toggleAppsIcon) toggleAppsIcon.classList.remove("icon-rotated");
+        }
+      });
+    }
+
+    // Update time every minute
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 60000);
+
+    /* ===============================
+       Initialize Application
+    ================================ */
+    console.log("Initializing endpoint detail page...");
+    loadEndpointData();
+  </script>
+
+</body>
+</html>
